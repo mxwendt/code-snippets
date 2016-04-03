@@ -1,1 +1,101 @@
 /* CSS declarations go here */
+
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    background-color: white;
+    position: relative;
+    color: black;
+    font-family: 'Helvetica Neue', 'Arial', sans-serif;
+}
+
+/* Layout ................................................................... */
+
+.l-menu {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.l-code {
+    position: relative;
+}
+
+.is-hidden {
+    display: none;
+}
+
+/* Code ..................................................................... */
+
+code {
+    display: block;
+    padding: 0 20px;
+    line-height: 20px;
+}
+
+code:nth-child(odd) {
+    background-color: #F7F7F7;
+}
+
+.comment {
+    color: #5d92fe;
+}
+
+code.indent-1 {
+    text-indent: 8px;
+}
+
+code.indent-2 {
+    text-indent: 16px;
+}
+
+code.indent-3 {
+    text-indent: 24px;
+}
+
+code.indent-4 {
+    text-indent: 32px;
+}
+
+code.is-highlighted {
+    background-color: #FFFF99;
+}
+
+.comment.is-highlighted {
+    background-color: rgba(255, 255, 147, 0.33);
+}
+
+code > input[type=range] {
+    margin-left: 10px;
+    vertical-align: text-top;
+}
+
+code > span.output {
+    color: #EC5E5D;
+    vertical-align: middle;
+    /* float: right; */
+}
+
+svg.calls {
+    padding: 0 10px;
+    box-shadow: inset 0 0 5px 0px rgba(0,0,0,0.3);
+    position: absolute;
+    top: 0;
+    left: 600px;
+}
+
+svg.calls circle {
+    fill: #30475C;
+}
+
+span.calls-label {
+    position: absolute;
+    bottom: -12px;
+    left: 600px;
+    font-size: 10px;
+}

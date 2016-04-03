@@ -1,0 +1,161 @@
+<template name="elifeCode">
+    <div class="l-menu"><label for="showState"><input type="checkbox" name="showState" id="showState"> show state</label></div>
+
+    <code>var plan = ["#####",</code>
+    <code style="text-indent: 94px">"#o&nbsp;&nbsp;#",</code>
+    <code style="text-indent: 94px">"#&nbsp;&nbsp;##",</code>
+    <code style="text-indent: 94px">"#&nbsp;&nbsp;o#",</code>
+    <code style="text-indent: 94px">"#####"];</code>
+
+    <code>&nbsp;</code>
+
+    <code class="comment">/**</code>
+        <code class="comment indent-1">* @param {Number} x <input id="vectorX" type="range" min="0" max="4" value="0"> {{vectorX}}</code>
+        <code class="comment indent-1">* @param {Number} y <input id="vectorY" type="range" min="0" max="4" value="0"> {{vectorY}}</code>
+        <code class="comment indent-1">*/</code>
+    <code>function Vector(x, y) {</code>
+        <code class="indent-1 vectorX vectorOtherX vectorOtherY">this.x = x; <span class="output">= {{vectorX}}</span></code>
+        <code class="indent-1 vectorY vectorOtherX vectorOtherY">this.y = y; <span class="output">= {{vectorY}}</span></code>
+    <code>}</code>
+    <code class="comment">/**</code>
+        <code class="comment indent-1">* @param {Object} other</code>
+        <code class="comment indent-1">* @param {Number} other.x <input id="vectorOtherX" type="range" min="0" max="4" value="0"> {{vectorOtherX}}</code>
+        <code class="comment indent-1">* @param {Number} other.y <input id="vectorOtherY" type="range" min="0" max="4" value="0"> {{vectorOtherY}}</code>
+        <code class="comment indent-1">*/</code>
+    <code>Vector.prototype.plus = function(other) {</code>
+        <code class="indent-1 vectorX vectorY vectorOtherX vectorOtherY">return new Vector(this.x + other.x, this.y + other.y); <span class="output">=&gt; {{vectorReturn}}</span></code>
+    <code>};</code>
+
+    <code>&nbsp;</code>
+
+    <code class="comment">/**</code>
+        <code class="comment indent-1">* @param {Number} width <input id="gridW" type="range" min="1" max="5" value="5"> {{gridW}}</code>
+        <code class="comment indent-1">* @param {Number} height <input id="gridH" type="range" min="1" max="5" value="5"> {{gridH}}</code>
+        <code class="comment indent-1">*/</code>
+    <code>function Grid(width, height) {</code>
+        <code class="indent-1 gridW gridH">this.space = new Array(width * height); <span class="output">= {{gridSpace}}</span></code>
+        <code class="indent-1 gridW gridInsideVectorX gridInsideVectorY gridSetVectorX gridSetVectorY">this.width = width; <span class="output">= {{gridW}}</span></code>
+        <code class="indent-1 gridH gridInsideVectorX gridInsideVectorY">this.height = height; <span class="output">= {{gridH}}</span></code>
+    <code>}</code>
+    <code class="comment">/**</code>
+        <code class="comment indent-1">* @param {Object} vector</code>
+        <code class="comment indent-1">* @param {Number} vector.x <input id="gridInsideVectorX" type="range" min="0" max="4" value="0"> {{gridInsideVectorX}}</code>
+        <code class="comment indent-1">* @param {Number} vector.y <input id="gridInsideVectorY" type="range" min="0" max="4" value="0"> {{gridInsideVectorY}}</code>
+        <code class="comment indent-1">*/</code>
+    <code>Grid.prototype.isInside = function(vector) {</code>
+        <code class="indent-1 gridW gridH gridInsideVectorX gridInsideVectorY">return vector.x &gt;= 0 && vector.x &lt; this.width && vector.y &gt;= 0 && vector.y &lt; this.height; <span class="output">{{gridInsideCondition}} =&gt; {{gridInsideReturn}}</span></code>
+    <code>};</code>
+    <code class="comment">/**</code>
+        <code class="comment indent-1">* @param {Object} vector</code>
+        <code class="comment indent-1">* @param {Number} vector.x <input id="gridGetVectorX" type="range" min="0" max="4" value="0"> {{gridGetVectorX}}</code>
+        <code class="comment indent-1">* @param {Number} vector.y <input id="gridGetVectorY" type="range" min="0" max="4" value="0"> {{gridGetVectorY}}</code>
+        <code class="comment indent-1">*/</code>
+    <code>Grid.prototype.get = function(vector) {</code>
+        <code class="indent-1 gridGetVectorX gridGetVectorY gridW gridH">return this.space[vector.x + this.width * vector.y]; <span class="output">=&gt; {{gridGetReturn}}</span></code>
+    <code>};</code>
+    <code class="comment">/**</code>
+        <code class="comment indent-1">* @param {Object} vector</code>
+        <code class="comment indent-1">* @param {Number} vector.x <input id="gridSetVectorX" type="range" min="0" max="4" value="0"> {{gridSetVectorX}}</code>
+        <code class="comment indent-1">* @param {Number} vector.y <input id="gridSetVectorY" type="range" min="0" max="4" value="0"> {{gridSetVectorY}}</code>
+        <code class="comment indent-1">* @param {String} value <select id="gridSetValue"><option value="#">#</option><option value="o">o</option><option value="space">space</option></select></code>
+        <code class="comment indent-1">*/</code>
+    <code>Grid.prototype.set = function(vector, value) {</code>
+        <code class="indent-1 gridW gridSetVectorX gridSetVectorY gridSetValue">this.space[vector.x + this.width * vector.y] = value; <span class="output">[{{gridSetValueSpace}}] &lt;= {{gridSetValue}}</span></code>
+    <code>};</code>
+
+    <code>&nbsp;</code>
+
+    <code>var directions = {</code>
+        <code class="indent-1">"n":  new Vector( 0, -1),</code>
+        <code class="indent-1">"ne": new Vector( 1, -1),</code>
+        <code class="indent-1">"e":  new Vector( 1,  0),</code>
+        <code class="indent-1">"se": new Vector( 1,  1),</code>
+        <code class="indent-1">"s":  new Vector( 0,  1),</code>
+        <code class="indent-1">"sw": new Vector(-1,  1),</code>
+        <code class="indent-1">"w":  new Vector(-1,  0),</code>
+        <code class="indent-1">"nw": new Vector(-1, -1)</code>
+    <code>};</code>
+
+    <code>&nbsp;</code>
+
+    <code>function randomElement(array) {</code>
+        <code class="indent-1">return array[Math.floor(Math.random() * array.length)];</code>
+    <code>}</code>
+
+    <code>&nbsp;</code>
+
+    <code>var directionNames = "n ne e se s sw w nw".split(" ");</code>
+
+    <code>&nbsp;</code>
+
+    <code>function BouncingCritter() {</code>
+        <code class="indent-1">this.direction = randomElement(directionNames);</code>
+    <code>};</code>
+    <code>BouncingCritter.prototype.act = function(view) {</code>
+        <code class="indent-1">if (view.look(this.direction) != " ") {</code>
+            <code class="indent-2">this.direction = view.find(" ") || "s";</code>
+        <code class="indent-1">}</code>
+        <code class="indent-1">return {type: "move", direction: this.direction};</code>
+    <code>};</code>
+
+    <code>&nbsp;</code>
+
+    <code>function elementFromChar(legend, ch) {</code>
+        <code class="indent-1">if (ch == " ") {</code>
+            <code class="indent-2">return null;</code>
+        <code class="indent-1">}</code>
+        <code class="indent-1">var element = new legend[ch]();</code>
+        <code class="indent-1">element.originChar = ch;</code>
+        <code class="indent-1">return element;</code>
+    <code>}</code>
+
+    <code>&nbsp;</code>
+
+    <code>function World(map, legend) {</code>
+        <code class="indent-1">var grid = new Grid(map[0].length, map.length);</code>
+        <code class="indent-1">this.grid = grid;</code>
+        <code class="indent-1">this.legend = legend;</code>
+
+    <code>&nbsp;</code>
+
+        <code class="indent-1">map.forEach(function(line, y) {</code>
+            <code class="indent-2">for (var x = 0; x &lt; line.length; x++) {</code>
+    <code class="indent-3">grid.set(new Vector(x, y), elementFromChar(legend, line[x]));</code>
+            <code class="indent-2">}</code>
+        <code class="indent-1">});</code>
+    <code>}</code>
+
+    <code>&nbsp;</code>
+
+    <code>function charFromElement(element) {</code>
+        <code class="indent-1">if (element == null) {</code>
+            <code class="indent-2">return " ";</code>
+        <code class="indent-1">} else {</code>
+            <code class="indent-2">return element.originChar;</code>
+        <code class="indent-1">}</code>
+    <code>}</code>
+
+    <code>&nbsp;</code>
+
+    <code>World.prototype.toString = function() {</code>
+        <code class="indent-1">var output = "";</code>
+        <code class="indent-1">for (var y = 0; y &lt; this.grid.height; y++) {</code>
+            <code class="indent-2">for (var x = 0; x &lt; this.grid.width; x++) {</code>
+    <code class="indent-3">var element = this.grid.get(new Vector(x, y));</code>
+    <code class="indent-3">output += charFromElement(element);</code>
+            <code class="indent-2">}</code>
+            <code class="indent-2">output += "\n";</code>
+        <code class="indent-1">}</code>
+        <code class="indent-1">return output;</code>
+    <code>};</code>
+
+    <code>&nbsp;</code>
+
+    <code>function Wall() {}</code>
+
+    <code>&nbsp;</code>
+
+    <code>var world = new World(plan, {"#": Wall, "o": BouncingCritter});</code>
+
+    <code>&nbsp;</code>
+</template>

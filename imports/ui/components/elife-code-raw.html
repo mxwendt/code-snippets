@@ -1,0 +1,104 @@
+<template name="elifeCodeRaw">
+    <code>var plan = ["#####",</code>
+    <code style="text-indent: 94px">"#o&nbsp;&nbsp;#",</code>
+    <code style="text-indent: 94px">"#&nbsp;&nbsp;##",</code>
+    <code style="text-indent: 94px">"#&nbsp;&nbsp;o#",</code>
+    <code style="text-indent: 94px">"#####"];</code>
+    <code>&nbsp;</code>
+    <code>function Vector(x, y) {</code>
+    <code class="indent-1">this.x = x;</code>
+    <code class="indent-1">this.y = y;</code>
+    <code>}</code>
+    <code>Vector.prototype.plus = function(other) {</code>
+    <code class="indent-1">return new Vector(this.x + other.x, this.y + other.y);</code>
+    <code>};</code>
+    <code>&nbsp;</code>
+    <code>function Grid(width, height) {</code>
+    <code class="indent-1">this.space = new Array(width * height);</code>
+    <code class="indent-1">this.width = width;</code>
+    <code class="indent-1">this.height = height;</code>
+    <code>}</code>
+    <code>Grid.prototype.isInside = function(vector) {</code>
+    <code class="indent-1">return vector.x &gt;= 0 && vector.x &lt; this.width &&</code>
+    <code class="indent-1">vector.y &gt;= 0 && vector.y &lt; this.height;</code>
+    <code>};</code>
+    <code>Grid.prototype.get = function(vector) {</code>
+    <code class="indent-1">return this.space[vector.x + this.width * vector.y];</code>
+    <code>};</code>
+    <code>Grid.prototype.set = function(vector, value) {</code>
+    <code class="indent-1">this.space[vector.x + this.width * vector.y] = value;</code>
+    <code>};</code>
+    <code>&nbsp;</code>
+    <code>var directions = {</code>
+    <code class="indent-1">"n":  new Vector( 0, -1),</code>
+    <code class="indent-1">"ne": new Vector( 1, -1),</code>
+    <code class="indent-1">"e":  new Vector( 1,  0),</code>
+    <code class="indent-1">"se": new Vector( 1,  1),</code>
+    <code class="indent-1">"s":  new Vector( 0,  1),</code>
+    <code class="indent-1">"sw": new Vector(-1,  1),</code>
+    <code class="indent-1">"w":  new Vector(-1,  0),</code>
+    <code class="indent-1">"nw": new Vector(-1, -1)</code>
+    <code>};</code>
+    <code>&nbsp;</code>
+    <code>function randomElement(array) {</code>
+    <code class="indent-1">return array[Math.floor(Math.random() * array.length)];</code>
+    <code>}</code>
+    <code>&nbsp;</code>
+    <code>var directionNames = "n ne e se s sw w nw".split(" ");</code>
+    <code>&nbsp;</code>
+    <code>function BouncingCritter() {</code>
+    <code class="indent-1">this.direction = randomElement(directionNames);</code>
+    <code>};</code>
+    <code>BouncingCritter.prototype.act = function(view) {</code>
+    <code class="indent-1">if (view.look(this.direction) != " ") {</code>
+    <code class="indent-2">this.direction = view.find(" ") || "s";</code>
+    <code class="indent-1">}</code>
+    <code class="indent-1">return {type: "move", direction: this.direction};</code>
+    <code>};</code>
+    <code>&nbsp;</code>
+    <code>function elementFromChar(legend, ch) {</code>
+    <code class="indent-1">if (ch == " ") {</code>
+    <code class="indent-2">return null;</code>
+    <code class="indent-1">}</code>
+    <code class="indent-1">var element = new legend[ch]();</code>
+    <code class="indent-1">element.originChar = ch;</code>
+    <code class="indent-1">return element;</code>
+    <code>}</code>
+    <code>&nbsp;</code>
+    <code>function World(map, legend) {</code>
+    <code class="indent-1">var grid = new Grid(map[0].length, map.length);</code>
+    <code class="indent-1">this.grid = grid;</code>
+    <code class="indent-1">this.legend = legend;</code>
+    <code>&nbsp;</code>
+    <code class="indent-1">map.forEach(function(line, y) {</code>
+    <code class="indent-2">for (var x = 0; x &lt; line.length; x++) {</code>
+    <code class="indent-3">grid.set(new Vector(x, y), elementFromChar(legend, line[x]));</code>
+    <code class="indent-2">}</code>
+    <code class="indent-1">});</code>
+    <code>}</code>
+    <code>&nbsp;</code>
+    <code>function charFromElement(element) {</code>
+    <code class="indent-1">if (element == null) {</code>
+    <code class="indent-2">return " ";</code>
+    <code class="indent-1">} else {</code>
+    <code class="indent-2">return element.originChar;</code>
+    <code class="indent-1">}</code>
+    <code>}</code>
+    <code>&nbsp;</code>
+    <code>World.prototype.toString = function() {</code>
+    <code class="indent-1">var output = "";</code>
+    <code class="indent-1">for (var y = 0; y &lt; this.grid.height; y++) {</code>
+    <code class="indent-2">for (var x = 0; x &lt; this.grid.width; x++) {</code>
+    <code class="indent-3">var element = this.grid.get(new Vector(x, y));</code>
+    <code class="indent-3">output += charFromElement(element);</code>
+    <code class="indent-2">}</code>
+    <code class="indent-2">output += "\n";</code>
+    <code class="indent-1">}</code>
+    <code class="indent-1">return output;</code>
+    <code>};</code>
+    <code>&nbsp;</code>
+    <code>function Wall() {}</code>
+    <code>&nbsp;</code>
+    <code>var world = new World(plan, {"#": Wall, "o": BouncingCritter});</code>
+    <code>&nbsp;</code>
+</template>
