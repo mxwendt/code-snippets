@@ -93,36 +93,12 @@ Template.elifeCode.events({
         }
         removeLineHighlights();
     },
+
+    // State Changes
+
     'input input#vectorX': function(e) {
         Session.set('vectorX', e.target.value);
         addLineHighlights('.vectorX');
-    },
-    'focusin input#vectorX, focusin input#vectorY': function (e) {
-        if (document.getElementById('focusChange').checked) {
-            for (var elem of document.querySelectorAll('.comment')) {
-                if (! elem.classList.contains('vectorX')) {
-                    elem.classList.add('is-hidden');
-                }
-            }
-            for (var elem of document.querySelectorAll('.code')) {
-                if (! elem.classList.contains('vectorX')) {
-                    elem.classList.add('is-hidden');
-                }
-                if (elem.classList.contains('vectorX')) {
-                    console.log(elem.previousElementSibling);
-                    elem.previousElementSibling.classList.remove('is-hidden');
-                    console.log(elem.nextElementSibling);
-                    elem.nextElementSibling.classList.remove('is-hidden');
-                }
-            }
-        }
-    },
-    'focusout input#vectorX, focusout input#vectorY': function (e) {
-        if (document.getElementById('focusChange').checked) {
-            for (var elem of document.querySelectorAll('.comment')) {
-                elem.classList.remove('is-hidden');
-            }
-        }
     },
     'input input#vectorY': function(e) {
         Session.set('vectorY', e.target.value);
@@ -171,8 +147,76 @@ Template.elifeCode.events({
     'input select#gridSetValue': function (e) {
         Session.set('gridSetValue', e.target.value);
         addLineHighlights('.gridSetValue');
+    },
+
+    // Focus Mode
+
+    'mousedown input#vectorX': function (e) {
+        if (document.getElementById('focusChange').checked) {
+            focusOn('vectorX');
+        }
+    },
+    'mouseup input#vectorX': function (e) {
+        if (document.getElementById('focusChange').checked) {
+            focusOff();
+        }
+    },
+    'mousedown input#vectorY': function (e) {
+        if (document.getElementById('focusChange').checked) {
+            focusOn('vectorY');
+        }
+    },
+    'mouseup input#vectorY': function (e) {
+        if (document.getElementById('focusChange').checked) {
+            focusOff();
+        }
+    },
+    'mousedown input#gridW': function (e) {
+        if (document.getElementById('focusChange').checked) {
+            focusOn('gridW');
+        }
+    },
+    'mouseup input#gridW': function (e) {
+        if (document.getElementById('focusChange').checked) {
+            focusOff();
+        }
+    },
+    'mousedown input#gridH': function (e) {
+        if (document.getElementById('focusChange').checked) {
+            focusOn('gridH');
+        }
+    },
+    'mouseup input#gridH': function (e) {
+        if (document.getElementById('focusChange').checked) {
+            focusOff();
+        }
     }
 });
+
+function focusOn(selector) {
+    // Hide all uneffected comments
+    for (var comment of document.querySelectorAll('.comment')) {
+        if (! comment.classList.contains(selector + 'Comment')) {
+            comment.classList.add('is-hidden');
+        }
+    }
+    // Hide all uneffected lines of code
+    for (var loc of document.querySelectorAll('.code')) {
+        if (! loc.classList.contains(selector + 'Code')) {
+            loc.classList.add('is-hidden');
+        }
+    }
+}
+
+function focusOff() {
+    // Show all comments and lines of code again
+    for (var elem of document.querySelectorAll('.comment')) {
+        if (elem.classList.contains('is-hidden')) elem.classList.remove('is-hidden');
+    }
+    for (var elem of document.querySelectorAll('.code')) {
+        if (elem.classList.contains('is-hidden')) elem.classList.remove('is-hidden');
+    }
+}
 
 function addLineHighlights(selector) {
     removeLineHighlights();
@@ -192,124 +236,3 @@ function removeLineHighlights() {
         line.classList.remove('is-highlighted--dep');
     }
 }
-
-/*
-var plan = ["############################",
-    "#      #    #      o      ##",
-    "#                          #",
-    "#          #####           #",
-    "##         #   #    ##     #",
-    "###           ##     #     #",
-    "#           ###      #     #",
-    "#   ####                   #",
-    "#   ##       o             #",
-    "# o  #         o       ### #",
-    "#    #                     #",
-    "############################"];
-
-function Vector(x, y) {
-    this.x = x;
-    this.y = y;
-}
-Vector.prototype.plus = function(other) {
-    return new Vector(this.x + other.x, this.y + other.y);
-};
-
-function Grid(width, height) {
-    this.space = new Array(width * height);
-    this.width = width;
-    this.height = height;
-}
-Grid.prototype.isInside = function(vector) {
-    return vector.x >= 0 && vector.x < this.width &&
-        vector.y >= 0 && vector.y < this.height;
-};
-Grid.prototype.get = function(vector) {
-    return this.space[vector.x + this.width * vector.y];
-};
-Grid.prototype.set = function(vector, value) {
-    this.space[vector.x + this.width * vector.y] = value;
-};
-
-var directions = {
-    "n":  new Vector( 0, -1),
-    "ne": new Vector( 1, -1),
-    "e":  new Vector( 1,  0),
-    "se": new Vector( 1,  1),
-    "s":  new Vector( 0,  1),
-    "sw": new Vector(-1,  1),
-    "w":  new Vector(-1,  0),
-    "nw": new Vector(-1, -1)
-};
-
-function randomElement(array) {
-    return array[Math.floor(Math.random() * array.length)];
-}
-
-var directionNames = "n ne e se s sw w nw".split(" ");
-
-function BouncingCritter() {
-    this.direction = randomElement(directionNames);
-};
-
-BouncingCritter.prototype.act = function(view) {
-    if (view.look(this.direction) != " ")
-        this.direction = view.find(" ") || "s";
-    return {type: "move", direction: this.direction};
-};
-
-function elementFromChar(legend, ch) {
-    if (ch == " ")
-        return null;
-    var element = new legend[ch]();
-    element.originChar = ch;
-    return element;
-}
-
-function World(map, legend) {
-    var grid = new Grid(map[0].length, map.length);
-    this.grid = grid;
-    this.legend = legend;
-
-    map.forEach(function(line, y) {
-        for (var x = 0; x < line.length; x++)
-            grid.set(new Vector(x, y),
-                elementFromChar(legend, line[x]));
-    });
-}
-
-function charFromElement(element) {
-    if (element == null)
-        return " ";
-    else
-        return element.originChar;
-}
-
-World.prototype.toString = function() {
-    var output = "";
-    for (var y = 0; y < this.grid.height; y++) {
-        for (var x = 0; x < this.grid.width; x++) {
-            var element = this.grid.get(new Vector(x, y));
-            output += charFromElement(element);
-        }
-        output += "\n";
-    }
-    return output;
-};
-
-function Wall() {}
-
-var world = new World(plan, {"#": Wall,
-    "o": BouncingCritter});
-//   #      #    #      o      ##
-//   #                          #
-//   #          #####           #
-//   ##         #   #    ##     #
-//   ###           ##     #     #
-//   #           ###      #     #
-//   #   ####                   #
-//   #   ##       o             #
-//   # o  #         o       ### #
-//   #    #                     #
-//   ############################
-*/

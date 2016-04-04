@@ -5,7 +5,7 @@
     </div>
 
     <!-- Plan -->
-    <div class="code">
+    <div class="code vectorXCode vectorYCode gridHCode gridWCode">
         <code>var plan = ["#####",</code>
         <code style="text-indent: 94px">"#o&nbsp;&nbsp;#",</code>
         <code style="text-indent: 94px">"#&nbsp;&nbsp;##",</code>
@@ -16,13 +16,13 @@
     <code class="emptyLine">&nbsp;</code>
 
     <!-- Vector -->
-    <div class="comment">
+    <div class="comment vectorXComment gridHComment gridWComment">
         <code>/**</code>
         <code class="indent-1">* @param {Number} x <input id="vectorX" type="range" min="0" max="4" value="0"> {{vectorX}}</code>
         <code class="indent-1">* @param {Number} y <input id="vectorY" type="range" min="0" max="4" value="0"> {{vectorY}}</code>
         <code class="indent-1">*/</code>
     </div>
-    <div class="code">
+    <div class="code vectorXCode vectorYCode gridHCode gridWCode">
         <code>function Vector(x, y) {</code>
             <code class="indent-1 vectorX vectorOtherXDep vectorOtherYDep">this.x = x; <span class="output">= {{vectorX}}</span></code>
             <code class="indent-1 vectorY vectorOtherXDep vectorOtherYDep">this.y = y; <span class="output">= {{vectorY}}</span></code>
@@ -30,14 +30,14 @@
     </div>
 
     <!-- Vector.plus -->
-    <div class="comment">
+    <div class="comment gridHComment gridWComment">
         <code>/**</code>
         <code class="indent-1">* @param {Object} other</code>
         <code class="indent-1">* @param {Number} other.x <input id="vectorOtherX" type="range" min="0" max="4" value="0"> {{vectorOtherX}}</code>
         <code class="indent-1">* @param {Number} other.y <input id="vectorOtherY" type="range" min="0" max="4" value="0"> {{vectorOtherY}}</code>
         <code class="indent-1">*/</code>
     </div>
-    <div class="code">
+    <div class="code vectorXCode vectorYCode gridHCode gridWCode">
         <code>Vector.prototype.plus = function(other) {</code>
             <code class="indent-1 vectorX vectorY vectorOtherX vectorOtherY">return new Vector(this.x + other.x, this.y + other.y); <span class="output">=&gt; {{vectorReturn}}</span></code>
         <code>};</code>
@@ -46,13 +46,13 @@
     <code class="emptyLine">&nbsp;</code>
 
     <!-- Grid -->
-    <div class="comment">
+    <div class="comment gridHComment gridWComment">
         <code>/**</code>
         <code class="indent-1">* @param {Number} width <input id="gridW" type="range" min="1" max="5" value="5"> {{gridW}}</code>
         <code class="indent-1">* @param {Number} height <input id="gridH" type="range" min="1" max="5" value="5"> {{gridH}}</code>
         <code class="indent-1">*/</code>
     </div>
-    <div class="code">
+    <div class="code gridHCode gridWCode">
         <code>function Grid(width, height) {</code>
             <code class="indent-1 gridW gridH gridGetVectorXDep gridGetVectorYDep gridSetVectorXDep gridSetVectorYDep">this.space = new Array(width * height); <span class="output">= {{gridSpace}}</span></code>
             <code class="indent-1 gridW gridInsideVectorXDep gridInsideVectorYDep">this.width = width; <span class="output">= {{gridW}}</span></code>
@@ -68,7 +68,7 @@
         <code class="indent-1">* @param {Number} vector.y <input id="gridInsideVectorY" type="range" min="0" max="4" value="0"> {{gridInsideVectorY}}</code>
         <code class="indent-1">*/</code>
     </div>
-    <div class="code">
+    <div class="code gridHCode gridWCode">
         <code>Grid.prototype.isInside = function(vector) {</code>
             <code class="indent-1 gridW gridH gridInsideVectorX gridInsideVectorY">return vector.x &gt;= 0 && vector.x &lt; this.width && vector.y &gt;= 0 && vector.y &lt; this.height; <span class="output">{{gridInsideCondition}} =&gt; {{gridInsideReturn}}</span></code>
         <code>};</code>
@@ -82,7 +82,7 @@
         <code class="indent-1">* @param {Number} vector.y <input id="gridGetVectorY" type="range" min="0" max="4" value="0"> {{gridGetVectorY}}</code>
         <code class="indent-1">*/</code>
     </div>
-    <div class="code">
+    <div class="code gridHCode gridWCode">
         <code>Grid.prototype.get = function(vector) {</code>
             <code class="indent-1 gridWDep gridHDep gridGetVectorX gridGetVectorY">return this.space[vector.x + this.width * vector.y]; <span class="output">=&gt; {{gridGetReturn}}</span></code>
         <code>};</code>
@@ -97,7 +97,7 @@
         <code class="indent-1">* @param {String} value <select id="gridSetValue"><option value="#">#</option><option value="o">o</option><option value="space">space</option></select></code>
         <code class="indent-1">*/</code>
     </div>
-    <div class="code">
+    <div class="code gridHCode gridWCode">
         <code>Grid.prototype.set = function(vector, value) {</code>
             <code class="indent-1 gridWDep gridHDep gridSetVectorX gridSetVectorY gridSetValue">this.space[vector.x + this.width * vector.y] = value; <span class="output">[{{gridSetValueSpace}}] &lt;= {{gridSetValue}}</span></code>
         <code>};</code>
