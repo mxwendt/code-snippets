@@ -36,14 +36,21 @@ code {
     display: block;
     padding: 0 20px;
     line-height: 20px;
+    font-family: Menlo;
+    font-size: 13px;
 }
 
 code:nth-child(odd) {
     background-color: #F7F7F7;
 }
 
-.comment {
+code.emptyLine {
+    background-color: white;
+}
+
+.comment code {
     color: #5d92fe;
+    background-color: aliceblue !important;
 }
 
 code.indent-1 {
@@ -64,6 +71,10 @@ code.indent-4 {
 
 code.is-highlighted {
     background-color: #FFFF99;
+}
+
+code.is-highlighted--dep {
+    background-color: rgba(255, 255, 153, 0.33);
 }
 
 .comment.is-highlighted {

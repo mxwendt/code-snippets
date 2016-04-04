@@ -4,7 +4,7 @@ import { Session } from 'meteor/session'
 import './elife-code.html';
 
 Template.elifeCode.onRendered(function() {
-    for (var elem of document.querySelectorAll('.comment, .output')) {
+    for (var elem of document.querySelectorAll('.comment, .output, .focusChangeWrapper')) {
         elem.classList.add('is-hidden');
     }
 
@@ -40,8 +40,7 @@ Template.elifeCode.helpers({
         return Session.get('vectorOtherY');
     },
     vectorReturn: function () {
-        return '{ x: ' + (Number(Session.get('vectorX')) + Number(Session.get('vectorOtherX'))) + ', y: ' +
-            (Number(Session.get('vectorY')) + Number(Session.get('vectorOtherY'))) + ' }';
+        return '{ x: ' + (Number(Session.get('vectorX')) + Number(Session.get('vectorOtherX'))) + ', y: ' + (Number(Session.get('vectorY')) + Number(Session.get('vectorOtherY'))) + ' }';
     },
     gridW: function() {
         return Session.get('gridW');
@@ -89,13 +88,41 @@ Template.elifeCode.helpers({
 
 Template.elifeCode.events({
     'change input#showState': function (e) {
-        for (var elem of document.querySelectorAll('.comment, .output')) {
+        for (var elem of document.querySelectorAll('.comment, .output, .focusChangeWrapper')) {
             elem.classList.toggle('is-hidden');
         }
+        removeLineHighlights();
     },
     'input input#vectorX': function(e) {
         Session.set('vectorX', e.target.value);
         addLineHighlights('.vectorX');
+    },
+    'focusin input#vectorX, focusin input#vectorY': function (e) {
+        if (document.getElementById('focusChange').checked) {
+            for (var elem of document.querySelectorAll('.comment')) {
+                if (! elem.classList.contains('vectorX')) {
+                    elem.classList.add('is-hidden');
+                }
+            }
+            for (var elem of document.querySelectorAll('.code')) {
+                if (! elem.classList.contains('vectorX')) {
+                    elem.classList.add('is-hidden');
+                }
+                if (elem.classList.contains('vectorX')) {
+                    console.log(elem.previousElementSibling);
+                    elem.previousElementSibling.classList.remove('is-hidden');
+                    console.log(elem.nextElementSibling);
+                    elem.nextElementSibling.classList.remove('is-hidden');
+                }
+            }
+        }
+    },
+    'focusout input#vectorX, focusout input#vectorY': function (e) {
+        if (document.getElementById('focusChange').checked) {
+            for (var elem of document.querySelectorAll('.comment')) {
+                elem.classList.remove('is-hidden');
+            }
+        }
     },
     'input input#vectorY': function(e) {
         Session.set('vectorY', e.target.value);
@@ -152,11 +179,17 @@ function addLineHighlights(selector) {
     for (var line of document.querySelectorAll(selector)) {
         line.classList.add('is-highlighted');
     }
+    for (var line of document.querySelectorAll(selector + 'Dep')) {
+        line.classList.add('is-highlighted--dep');
+    }
 }
 
 function removeLineHighlights() {
     for (var line of document.querySelectorAll('.is-highlighted')) {
         line.classList.remove('is-highlighted');
+    }
+    for (var line of document.querySelectorAll('.is-highlighted--dep')) {
+        line.classList.remove('is-highlighted--dep');
     }
 }
 
