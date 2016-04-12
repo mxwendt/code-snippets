@@ -2,12 +2,12 @@
 
 FlowRouter.route('/', {
     action: function(params, queryParams) {
-        console.log("root");
+        BlazeLayout.render('mainLayout', { main: "home" });
     }
 });
 
 FlowRouter.route('/test', {
     action: function(params, queryParams) {
-        console.log("test");
+        BlazeLayout.render('mainLayout', { main: "elifeCode" });
     }
 });
