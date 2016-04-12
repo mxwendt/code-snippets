@@ -6,4 +6,5 @@ import './layouts/main.js';
 
 import './components/nav.js';
 import './components/home.js';
+import './components/array.js';
 import './components/elife-code.js';

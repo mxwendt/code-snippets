@@ -6,8 +6,8 @@ FlowRouter.route('/', {
     }
 });
 
-FlowRouter.route('/test', {
+FlowRouter.route('/array', {
     action: function(params, queryParams) {
-        BlazeLayout.render('mainLayout', { main: "elifeCode" });
+        BlazeLayout.render('mainLayout', { main: "array" });
     }
 });
