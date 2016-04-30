@@ -1,9 +1,9 @@
 import { Template } from 'meteor/templating';
 
-import './array.html';
+import './fibonacci.html';
 
-Template.array.onRendered(function() {
-    drawCalendar();
+Template.fibonacci.onRendered(function() {
+    //drawCalendar();
 });
 
 function drawCalendar() {
